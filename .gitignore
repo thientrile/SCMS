@@ -128,3 +128,13 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+yarn.lock
+
+upload
+#SSL
+src/cert.csr
+src/key.pem
+src/cert.pem
+
+.gitignore
+.gitiattributes
