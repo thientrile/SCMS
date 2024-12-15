@@ -7,7 +7,7 @@ const {
 } = require('../core/error.response');
 const JWT = require('jsonwebtoken');
 const HEADERS = require('../utils/header');
-const { deleteByClientId } = require('../services/keyToken.services');
+const { deleteByClientId } = require('../modules/access/services/keyToken.services');
 const { tk_checkKeyTokenVerify } = require('../repositories/keyToken.repo');
 const createTokenPair = async (payload, publicKey, privateKey) => {
 	// accessToken

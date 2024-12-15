@@ -20,14 +20,14 @@ const compression = require('compression');
 
 // init db
 // init mongodb
-require('./db/mongoDB.db');
+require('./configs/mongoDB.config');
 
 // init redis
-const initRedis = require('./db/redis.db');
+const initRedis = require('./configs/redis.config');
 initRedis.init();
 
 // init elasticsearch
-const Elasticsearch = require('./db/elasticSearch.db');
+const Elasticsearch = require('./configs/elasticSearch.config.js');
 const { initAccessControl } = require('./middlewares/rbac.middleware');
 
 Elasticsearch.init();
@@ -40,7 +40,7 @@ app.use(compression());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 initAccessControl();
-app.use('', require('./routers'));
+app.use('', require('./routers.js'));
 
 // #function middleware error
 app.use((req, res, next) => {

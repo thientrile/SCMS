@@ -5,8 +5,7 @@ const mongoose = require('mongoose');
 const __SECONDS = 5000;
 const os = require('os');
 const proces = require('process');
-const { getRedis } = require('../db/redis.db');
-const client = getRedis().intanceConnect;
+
 //  count connections
 const countConnect = () => {
 	const numConnections = mongoose.connections.length;
@@ -29,6 +28,5 @@ const checkOverload = () => {
 
 module.exports = {
 	countConnect,
-	checkOverload,
-
+	checkOverload
 };

@@ -2,8 +2,8 @@
 
 'use strict';
 const rbac = require('./role.middleware');
-const { getAllGrants, getListRole } = require('../repositories/role.repo');
-const { getRoleNameByUserId } = require('../repositories/user.repo');
+
+const { getRoleNameByUserId,getAllGrants, getListRole } = require('../repositories/role.repo');
 const { ForbiddenError } = require('../core/error.response');
 
 const initAccessControl = async () => {

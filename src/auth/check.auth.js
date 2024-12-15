@@ -1,14 +1,14 @@
 /** @format */
 
 'use strict';
-const { findByCode } = require('../services/apiKey.service');
+const { findByCode } = require('../modules/access/services/apiKey.service');
 const headers = require('../utils/header');
 const {
 	AuthFailureError,
 	NotAcceptableError,
 	TooManyRequestsError
 } = require('../core/error.response');
-const { incr, getData, setData } = require('../services/redis.service');
+const { incr, getData, setData } = require('../database/redis.db');
 
 const apiKey = async (req, res, next) => {
 	try {
