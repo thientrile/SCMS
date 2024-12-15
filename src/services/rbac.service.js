@@ -50,7 +50,7 @@ async function createResource(userId, { name, slug, description }) {
 }
 
 // Get Resource List
-async function resourceList({ userId, limit = 30, offset = 0, search = '' }) {
+async function resourceList(userId, { limit = 30, offset = 0, search = '' }) {
 	await grantAccess(userId, 'readAny', 'Resources');
 
 	const resources = await ResourceModel.aggregate([
