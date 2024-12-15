@@ -98,6 +98,7 @@ async function createRoleRoot(userId, payload) {
 	if (checkExist) {
 		throw new BadRequestError('Role already exists');
 	}
+	payload.isRoot = true;
 	payload._id = createMongoObjectId();
 	const data = addPrefixToKeys(payload, 'rol_', ['_id']);
 
@@ -177,27 +178,15 @@ const getListAllRole = async (userId) => {
 const deleteRole = async (userId, payload) => {
 	await grantAccess(userId, 'deleteOwn', 'Roles');
 	const { roleId } = payload;
-	const [role, roleDelete] = await Promise.all([
-		await RoleModel.findOneAndUpdate(
-			{ rol_slug: 1 },
-			{
-				$pull: { rol_parents: { _id: convertToObjectIdMongoose(roleId) } }
-			}
-		),
-		await RoleModel.findOneAndDelete({
-			_id: convertToObjectIdMongoose(roleId)
-		})
-	]);
-	if (!roleDelete) {
+	const role = await RoleModel.findById(convertToObjectIdMongoose(roleId));
+	if (!role) {
 		throw new BadRequestError('Role not found');
 	}
+	role.rol_status = role.rol_status === 'active' ? 'block' : 'active';
+	await role.save();
 
 	const [allListRole] = await Promise.all([
 		await getAllListRole(),
-		await userModel.updateMany(
-			{ usr_role: convertToObjectIdMongoose(roleId) },
-			{ $set: { usr_role: convertToObjectIdMongoose(role._id) } }
-		),
 		await initAccessControl()
 	]);
 

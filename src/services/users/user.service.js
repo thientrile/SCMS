@@ -2,13 +2,13 @@
 
 'use strict';
 const { number } = require('joi');
-const { grantAccess } = require('../middlewares/rbac.middleware');
-const userModel = require('../models/user.model');
+const { grantAccess } = require('../../middlewares/rbac.middleware');
+const userModel = require('../../models/user.model');
 const {
 	removePrefixFromKeys,
 	filterConvert,
 	convertToObjectIdMongoose
-} = require('../utils');
+} = require('../../utils');
 
 const getUserInfoById = async (userId, id = 0) => {
 	const grants = await grantAccess(userId, 'readAny', 'Users');

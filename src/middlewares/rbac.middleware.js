@@ -6,10 +6,8 @@ const { getAllGrants, getListRole } = require('../repositories/role.repo');
 const { getRoleNameByUserId } = require('../repositories/user.repo');
 const { ForbiddenError } = require('../core/error.response');
 
-
 const initAccessControl = async () => {
 	try {
-		console.log('initAccessControl');
 		const [grantAccess, roles] = await Promise.all([
 			await getAllGrants(),
 			await getListRole()

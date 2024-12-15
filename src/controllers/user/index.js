@@ -3,7 +3,7 @@
 'use strict';
 
 const { SuccessReponse } = require('../../core/success.response');
-const { getUserInfo } = require('../../services/user.service');
+const { getUserInfo } = require('../../services/users/user.service');
 
 const UserInfo = async (req, res) => {
 	new SuccessReponse({

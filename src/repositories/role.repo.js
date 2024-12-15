@@ -106,11 +106,6 @@ const getGrants = async (limit, offset, search) => {
 const getListRole = async () => {
 	return roleModel.aggregate([
 		{
-			$match: {
-				rol_status: 'active'
-			}
-		},
-		{
 			$unwind: '$rol_parents'
 		},
 		{
@@ -148,7 +143,8 @@ const getAllListRole = async () => {
 		{ $unwind: { path: '$resource_info', preserveNullAndEmptyArrays: true } }, // Xử lý nếu không tìm thấy resource
 		{
 			$addFields: {
-				'rol_grants.name': '$resource_info.src_name' // Thêm tên từ resource nếu tồn tại
+				'rol_grants.name': '$resource_info.src_name', // Thêm tên từ resource nếu tồn tại,
+				'rol_grants.suggest': '$resource_info.src_attr'
 			}
 		},
 		{
@@ -165,7 +161,8 @@ const getAllListRole = async () => {
 				parents: { $first: '$rol_parents' }
 			}
 		},
-		{ $sort: { createdAt: -1 } } // Sắp xếp theo thời gian tạo
+		
+		{ $sort: { createdAt: 1 } } // Sắp xếp theo thời gian tạo
 	]);
 };
 const getArrSrcByRoleName = async (roleName) => {

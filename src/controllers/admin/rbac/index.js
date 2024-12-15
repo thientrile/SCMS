@@ -52,7 +52,7 @@ const CreateResource = async (req, res) => {
 const CreateRole = async (req, res) => {
 	new CREATED({
 		message: 'Roles was fetched successfully',
-		metadata: await createRoleRoot(req.user._id)
+		metadata: await createRoleRoot(req.user._id,req.body)
 	}).send(res);
 };
 const Delrole = async (req, res) => {

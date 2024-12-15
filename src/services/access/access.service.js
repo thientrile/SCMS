@@ -2,29 +2,29 @@
 
 'use strict';
 const bcrypt = require('bcrypt');
-const userModel = require('../models/user.model');
+const userModel = require('../../models/user.model');
 const {
 	isValidation,
 	getErrorMessageMongose,
 
 	addPrefixToKeys,
 	randomId
-} = require('../utils/index');
+} = require('../../utils/index');
 const { generateKeyPairSync } = require('node:crypto');
-const { ForbiddenError } = require('../core/error.response');
+const { ForbiddenError } = require('../../core/error.response');
 const {
 	createKeyToken,
 	deleteByClientId,
 	findByClientId,
 	updateById
-} = require('./keyToken.services');
-const { createTokenPair } = require('../auth/utils.auth');
+} = require('../keyToken.services');
+const { createTokenPair } = require('../../auth/utils.auth');
 const {
 	userDeleteById,
 	userFindByusername
-} = require('../repositories/user.repo');
-const { AuthFailureError } = require('../core/error.response');
-const { registerRoleForUser } = require('./role.service');
+} = require('../../repositories/user.repo');
+const { AuthFailureError } = require('../../core/error.response');
+const { registerRoleForUser } = require('../role.service');
 const Joi = require('joi');
 
 // refetch token

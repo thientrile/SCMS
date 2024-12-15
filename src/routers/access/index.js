@@ -15,7 +15,7 @@ const {
 } = require('../../controllers/access');
 const { limitReq } = require('../../auth/check.auth');
 const { validateSchema } = require('../../middlewares/joi.middleware');
-const { joiAccess } = require('../../services/access.service');
+const { joiAccess } = require('../../services/access/access.service');
 const router = express.Router();
 router.post('/_register', validateSchema(joiAccess.signinup),asyncHandler(Register));
 router.post('/_login', validateSchema(joiAccess.login), asyncHandler(Login));

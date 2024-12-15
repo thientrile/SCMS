@@ -14,8 +14,9 @@ const {
 	CreateRole,
 	Delrole,
 	DelReource,
-  AddGrants
+	AddGrants
 } = require('../../controllers/admin/rbac');
+const { AutoImportResource } = require('../../controllers/admin');
 const router = express.Router();
 router.use(authertication);
 router.patch('/rbac/role/_setGrants', asyncHandler(SetGrants));
@@ -27,4 +28,5 @@ router.post('/rbac/resource/_create', asyncHandler(CreateResource));
 router.post('/rbac/role/_create', asyncHandler(CreateRole));
 router.delete('/rbac/role/_delete', asyncHandler(Delrole));
 router.delete('/rbac/resource/_delete', asyncHandler(DelReource));
+router.get('/resource/_import', asyncHandler(AutoImportResource));
 module.exports = router;
