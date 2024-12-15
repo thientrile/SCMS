@@ -7,7 +7,7 @@ const {
 	login,
 	handlerRefreshToken,
 	logout
-} = require('../../services/access.service');
+} = require('../../services/access/access.service');
 
 const Register = async (req, res) => {
 	new CREATED({
