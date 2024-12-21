@@ -14,15 +14,15 @@ const {
 	grantAccess,
 	initAccessControl
 } = require('../../../middlewares/rbac.middleware');
-const { getAllListRole, getGrants } = require('../../../repositories/role.repo');
+const {
+	getAllListRole,
+} = require('../../../repositories/role.repo');
 const { getRoleNameByUserId } = require('../../../repositories/user.repo');
 const userModel = require('../../../models/user.model');
 const { extendUser } = require('./role.service');
 
 // Create Resource
-async function createResource(userId, { name, slug, description }) {
-	await grantAccess(userId, 'createAny', 'Resources');
-
+async function createResource({ name, slug, description }) {
 	try {
 		const resource = await ResourceModel.create({
 			src_name: name,
@@ -50,8 +50,8 @@ async function createResource(userId, { name, slug, description }) {
 }
 
 // Get Resource List
-async function resourceList(userId, { limit = 30, offset = 0, search = '' }) {
-	await grantAccess(userId, 'readAny', 'Resources');
+async function resourceList( { limit = 30, offset = 0, search = '' }) {
+
 
 	const resources = await ResourceModel.aggregate([
 		{
@@ -85,8 +85,7 @@ async function resourceList(userId, { limit = 30, offset = 0, search = '' }) {
 }
 
 // Create Role by admin
-async function createRoleRoot(userId, payload) {
-	await grantAccess(userId, 'createAny', 'Roles');
+async function createRoleRoot(payload) {
 	const parentId = (await getRoleNameByUserId(userId)).usr_role._id;
 	const checkExist = await RoleModel.findOne({
 		rol_name: payload.name,
@@ -116,8 +115,7 @@ async function createRoleRoot(userId, payload) {
 }
 
 // Add Grants to Role
-async function addGrantsToRole(userId, payload) {
-	await grantAccess(userId, 'updateAny', 'Roles');
+async function addGrantsToRole(payload) {
 	const { roleId, grants } = payload;
 
 	const checkRoleExist = await RoleModel.findOneAndUpdate(
@@ -135,8 +133,7 @@ async function addGrantsToRole(userId, payload) {
 	return allListRole;
 }
 // set Grants to role
-async function setGrantsToRole(userId, payload) {
-	await grantAccess(userId, 'updateAny', 'Roles');
+async function setGrantsToRole(payload) {
 	const { roleId, grants } = payload;
 	const result = await RoleModel.findOneAndUpdate(
 		{ _id: convertToObjectIdMongoose(roleId) },
@@ -149,8 +146,7 @@ async function setGrantsToRole(userId, payload) {
 
 	return result;
 }
-const delGrantstoRole = async (userId, payload) => {
-	await grantAccess(userId, 'deleteAny', 'Roles');
+const delGrantstoRole = async (payload) => {
 	const { roleId, grantId } = payload;
 	const rol = await RoleModel.findOneAndUpdate(
 		{ _id: convertToObjectIdMongoose(roleId) },
@@ -162,21 +158,12 @@ const delGrantstoRole = async (userId, payload) => {
 	return rol;
 };
 
-// Get  list grants access control
-async function listGrants({ userId = 0, limit = 30, offset = 0, search = '' }) {
-	// You might want to consider adding the access control check here as well
-	await grantAccess(userId, 'readAny', 'Roles');
 
-	return await getGrants(limit, offset, search);
-}
 // get all list role
-const getListAllRole = async (userId) => {
-	await grantAccess(userId, 'readAny', 'Roles');
-	const roles = await getAllListRole();
-	return roles;
+const getListAllRole = async () => {
+	return getAllListRole();
 };
-const deleteRole = async (userId, payload) => {
-	await grantAccess(userId, 'deleteOwn', 'Roles');
+const deleteRole = async (payload) => {
 	const { roleId } = payload;
 	const role = await RoleModel.findById(convertToObjectIdMongoose(roleId));
 	if (!role) {
@@ -197,7 +184,6 @@ module.exports = {
 	resourceList,
 	createResource,
 	createRoleRoot,
-	listGrants,
 	addGrantsToRole,
 	getListAllRole,
 	delGrantstoRole,

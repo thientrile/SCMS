@@ -9,7 +9,7 @@ const UserInfo = async (req, res) => {
 	new SuccessReponse({
 		message: 'User info was successfully',
 		metadata: await getUserInfo(req.user._id)
-	}).send(res);
+	}).send(req, res);
 };
 module.exports = {
 	UserInfo

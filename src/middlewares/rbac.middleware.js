@@ -3,8 +3,14 @@
 'use strict';
 const rbac = require('./role.middleware');
 
-const { getRoleNameByUserId,getAllGrants, getListRole } = require('../repositories/role.repo');
+const {
+	getAllGrants,
+	getListRole,
+	getRoleSlug
+} = require('../repositories/role.repo');
 const { ForbiddenError } = require('../core/error.response');
+const { getRoleNameByUserId } = require('../repositories/user.repo');
+const { filterConvert } = require('../utils');
 
 const initAccessControl = async () => {
 	try {
@@ -12,6 +18,7 @@ const initAccessControl = async () => {
 			await getAllGrants(),
 			await getListRole()
 		]);
+
 		rbac.setGrants(grantAccess);
 		roles.forEach((role) => {
 			if (role.parent && role.grants > 0) {
@@ -23,22 +30,22 @@ const initAccessControl = async () => {
 		throw new Error('initAccessControl error');
 	}
 };
-const grantAccess = async (userId, action, resourse) => {
-	const roleName = (await getRoleNameByUserId(userId)).usr_role.rol_slug;
-
-	try {
-		const permission = rbac.can(roleName)[action](resourse);
-		if (!permission.granted) {
-			throw new ForbiddenError(
-				'You dont have permission to perform this action'
-			);
-		}
-		return permission;
-	} catch (err) {
-		console.error(err);
-		throw new ForbiddenError('you dont have permission to perform this action');
-	}
-};
+// const grantAccess = async (userId, action, resourse) => {
+// 	try {
+// 		const roleName = (await getRoleNameByUserId(userId)).usr_role.rol_slug;
+// 		const permission = rbac.can(roleName)[action](resourse);
+// 		if (!permission.granted) {
+// 			throw new ForbiddenError(
+// 				'You dont have permission to perform this action'
+// 			);
+// 		}
+// 		return permission;
+// 	} catch (err) {
+// 		initAccessControl();
+// 		console.error(err);
+// 		throw new ForbiddenError('you dont have permission to perform this action');
+// 	}
+// };
 /**
  * Checks if a user has permission to perform a specific action on a resource.
  *
@@ -52,9 +59,41 @@ const checkPermission = async (userId, action, resourse) => {
 	const permission = await rbac.can(roleName)[action](resourse);
 	return permission.granted ? permission : null;
 };
+const grantsReq = (action, resourse) => {
+	return async (req, res, next) => {
+		try {
+			if (!req.roleId) {
+				throw new ForbiddenError(
+					'You dont have permission to perform this action'
+				);
+			}
 
+			const roleSlug = (await getRoleSlug(req.roleId)).rol_slug;
+			if (!roleSlug) {
+				throw new ForbiddenError(
+					'You dont have permission to perform this action'
+				);
+			}
+			const permission = rbac.can(roleSlug)[action](resourse);
+			if (!permission.granted) {
+				throw new ForbiddenError(
+					'You dont have permission to perform this action'
+				);
+			}
+			req.grants = permission;
+			if (req.body) {
+				req.body = filterConvert(req.body, req.grants);
+			}
+			next();
+		} catch (err) {
+			console.error(err);
+			next(err);
+		}
+	};
+};
 module.exports = {
-	grantAccess,
+	// grantAccess,
 	checkPermission,
-	initAccessControl
+	initAccessControl,
+	grantsReq
 };

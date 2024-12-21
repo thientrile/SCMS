@@ -6,7 +6,6 @@ const express = require('express');
 
 const { asyncHandler } = require('../../helpers/asyncHandler');
 const { authertication } = require('../../auth/utils.auth');
-const { limitReq } = require('../../auth/check.auth');
 const { validateSchema } = require('../../middlewares/joi.middleware');
 const { joiAccess } = require('./services/access.service');
 const router = express.Router();
@@ -17,11 +16,17 @@ const {
 	RefreshToken,
 	Logout
 } = require('./controllers/index.controller');
-router.post('/_register', validateSchema(joiAccess.signinup),asyncHandler(Register));
+const { grantsReq } = require('../../middlewares/rbac.middleware');
+router.post(
+	'/_register',
+	validateSchema(joiAccess.signinup),
+	asyncHandler(Register)
+);
 router.post('/_login', validateSchema(joiAccess.login), asyncHandler(Login));
 router.use(authertication);
-router.get('/_verify', asyncHandler(Verify));
-router.get('/_logout', asyncHandler(Logout));
-router.patch('/_refresh', limitReq(10), asyncHandler(RefreshToken));
+// handle token
+router.get('/_verify', grantsReq('readOwn', 'Users'), asyncHandler(Verify));
+router.delete('/_logout', asyncHandler(Logout));
+router.patch('/_refresh', asyncHandler(RefreshToken));
 
 module.exports = router;

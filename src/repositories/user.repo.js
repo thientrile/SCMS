@@ -24,6 +24,7 @@ const userFindByusername = async (username) => {
 	return userModel.findOne(filter).lean();
 };
 const getRoleNameByUserId = async (id) => {
+
 	return userModel
 		.findById(convertToObjectIdMongoose(id))
 		.populate({

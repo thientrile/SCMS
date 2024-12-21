@@ -3,9 +3,14 @@
 'use strict';
 
 const roleModel = require('../models/role.model');
-
-const getId = async (slug) => {
+const { convertToObjectIdMongoose } = require('../utils');
+const getIdBySlug = async (slug) => {
 	return roleModel.findOne({ rol_slug: slug }).select('_id');
+};
+const getRoleSlug = async (id) => {
+	return roleModel
+		.findOne({ _id: convertToObjectIdMongoose(id) })
+		.select('rol_slug');
 };
 const getAllGrants = async () => {
 	return roleModel.aggregate([
@@ -120,6 +125,11 @@ const getListRole = async () => {
 			$unwind: '$parent'
 		},
 		{
+			$match: {
+				'parent.rol_status': 'active'
+			}
+		},
+		{
 			$project: {
 				name: '$rol_slug',
 				parent: '$parent.rol_slug',
@@ -161,7 +171,7 @@ const getAllListRole = async () => {
 				parents: { $first: '$rol_parents' }
 			}
 		},
-		
+
 		{ $sort: { createdAt: 1 } } // Sắp xếp theo thời gian tạo
 	]);
 };
@@ -200,10 +210,11 @@ const getArrSrcByRoleName = async (roleName) => {
 	]);
 };
 module.exports = {
-	getId,
+	getRoleSlug,
 	getAllGrants,
 	getGrants,
 	getListRole,
 	getAllListRole,
-	getArrSrcByRoleName
+	getArrSrcByRoleName,
+	getIdBySlug
 };

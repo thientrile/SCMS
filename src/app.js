@@ -17,7 +17,6 @@ const morgan = require('morgan');
 const { default: helmet } = require('helmet');
 const compression = require('compression');
 
-
 // init db
 // init mongodb
 require('./configs/mongoDB.config');

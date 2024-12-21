@@ -25,10 +25,11 @@ const { setData } = require('../../../database/redis.db');
  * @returns {clientId,token}
  */
 
-const createKeyToken = async ({ userId, publicKey }) => {
+const createKeyToken = async ({ userId, publicKey,privateKey }) => {
 	const tokens = await keytokenModel.create({
 		tk_userId: userId,
-		tk_publicKey: publicKey
+		tk_publicKey: publicKey,
+		tk_privateKey: privateKey
 	});
 
 	return tokens ? { clientId: tokens.tk_clientId } : null;

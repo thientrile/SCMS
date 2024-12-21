@@ -13,19 +13,19 @@ const Register = async (req, res) => {
 	new CREATED({
 		message: 'Register was successfully',
 		metadata: await signinup(req.body)
-	}).send(res);
+	}).send(req, res);
 };
 const Login = async (req, res) => {
 	new SuccessReponse({
 		message: 'Register was successfully',
 		metadata: await login(req.body)
-	}).send(res);
+	}).send(req, res);
 };
 const Verify = async (req, res) => {
 	new SuccessReponse({
 		message: 'Verify was successfully',
-		metadata: 1
-	}).send(res);
+		metadata: req.user
+	}).send(req, res);
 };
 const RefreshToken = async (req, res) => {
 	new SuccessReponse({
@@ -35,13 +35,13 @@ const RefreshToken = async (req, res) => {
 			req.user,
 			req.refreshToken
 		)
-	}).send(res);
+	}).send(req, res);
 };
 const Logout = async (req, res) => {
 	new SuccessReponse({
 		message: 'Logout was successfully',
 		metadata: await logout(req.keyStore)
-	}).send(res);
+	}).send(req, res);
 };
 module.exports = {
 	Register,

@@ -3,17 +3,12 @@
 'use strict';
 
 const express = require('express');
-const { apiKey, permission } = require('./auth/check.auth');
+const { apiKey, permission, Hmac } = require('./auth/check.auth');
 const router = express.Router();
 router.use(apiKey);
-router.use(permission('access'));
-router.use('/access', require('./modules/access/index'));
-router.use('/upload', require('./modules/upload/index'));
-router.use(permission('user'));
-router.use('/user', require('./modules/user/index'));
-router.use(permission('shop'));
-
-router.use(permission('admin'));
-router.use('/admin', require('./modules/admin/index'));
+router.use(Hmac);
+router.use('/access', permission('access'), require('./modules/access/index'));
+router.use('/user', permission('user'), require('./modules/user/index'));
+router.use('/admin', permission('admin'), require('./modules/admin/index'));
 
 module.exports = router;

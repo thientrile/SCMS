@@ -7,10 +7,11 @@
 
 /** @format */
 
-"use strict";
-const _ = require("lodash");
-const { Types } = require("mongoose");
-const Joi = require("joi");
+'use strict';
+const { generateKeyPairSync } = require('node:crypto');
+const _ = require('lodash');
+const { Types } = require('mongoose');
+const Joi = require('joi');
 /**
  * Retrieves specified fields from an object.
  *
@@ -20,7 +21,7 @@ const Joi = require("joi");
  * @returns {Object} - An object containing only the specified fields from the original object.
  */
 const getInfoData = ({ fields = [], object = {} }) => {
-  return _.pick(object, fields);
+	return _.pick(object, fields);
 };
 /**
  * Omit specified fields from an object.
@@ -31,7 +32,7 @@ const getInfoData = ({ fields = [], object = {} }) => {
  * @returns {Object} - The object with specified fields omitted.
  */
 const omitInfoData = ({ fields = [], object = {} }) => {
-  return _.omit(object, fields);
+	return _.omit(object, fields);
 };
 
 /**
@@ -41,7 +42,7 @@ const omitInfoData = ({ fields = [], object = {} }) => {
  * @returns {Object} - The object with select options as keys and value 1.
  */
 const getSelectData = (select = []) => {
-  return Object.fromEntries(select.map((el) => [el, 1]));
+	return Object.fromEntries(select.map((el) => [el, 1]));
 };
 /**
  * Creates an object with keys from the given array and sets their values to 0.
@@ -50,7 +51,7 @@ const getSelectData = (select = []) => {
  * @returns {Object} - The object with keys from the array and values set to 0.
  */
 const unGetSelectData = (select = []) => {
-  return Object.fromEntries(select.map((el) => [el, 0]));
+	return Object.fromEntries(select.map((el) => [el, 0]));
 };
 /**
  * Removes properties with null or undefined values from an object.
@@ -59,12 +60,12 @@ const unGetSelectData = (select = []) => {
  * @returns {Object} - The object with null or undefined properties removed.
  */
 const removeUndefineObject = (obj) => {
-  Object.keys(obj).forEach((k) => {
-    if (obj[k] === null || obj === undefined) {
-      delete obj[k];
-    }
-  });
-  return obj;
+	Object.keys(obj).forEach((k) => {
+		if (obj[k] === null || obj === undefined) {
+			delete obj[k];
+		}
+	});
+	return obj;
 };
 /**
  * Recursively updates a nested object by flattening it.
@@ -73,20 +74,20 @@ const removeUndefineObject = (obj) => {
  * @returns {Object} - The updated object with flattened properties.
  */
 const updateNestedObject = (obj) => {
-  const final = {};
+	const final = {};
 
-  Object.keys(obj).forEach((k) => {
-    if (typeof obj[k] === "object" && !Array.isArray(obj[k])) {
-      const respone = updateNestedObject(obj[k]);
-      Object.keys(respone).forEach((a) => {
-        final[`${k}.${a}`] = respone[a];
-      });
-    } else {
-      final[k] = obj[k];
-    }
-  });
+	Object.keys(obj).forEach((k) => {
+		if (typeof obj[k] === 'object' && !Array.isArray(obj[k])) {
+			const respone = updateNestedObject(obj[k]);
+			Object.keys(respone).forEach((a) => {
+				final[`${k}.${a}`] = respone[a];
+			});
+		} else {
+			final[k] = obj[k];
+		}
+	});
 
-  return final;
+	return final;
 };
 /**
  * Converts a string ID to a Mongoose ObjectId.
@@ -109,10 +110,10 @@ const converToUUIDMongoose = (id) => new Types.UUID(id);
  * @returns {Array} - The converted array.
  */
 const convertToArray = (arr) => {
-  if (!Array.isArray(arr)) {
-    return arr.trim().split();
-  }
-  return arr;
+	if (!Array.isArray(arr)) {
+		return arr.trim().split();
+	}
+	return arr;
 };
 
 /**
@@ -123,20 +124,20 @@ const convertToArray = (arr) => {
  * @returns {Object|Array} - The object or array of objects with renamed keys.
  */
 const renameObjectKey = (field, obj) => {
-  const processObject = (target) => {
-    Object.keys(field).forEach((oldKey) => {
-      target[field[oldKey]] = target[oldKey];
-      delete target[oldKey];
-    });
-  };
+	const processObject = (target) => {
+		Object.keys(field).forEach((oldKey) => {
+			target[field[oldKey]] = target[oldKey];
+			delete target[oldKey];
+		});
+	};
 
-  if (Array.isArray(obj)) {
-    obj.forEach(processObject);
-  } else {
-    processObject(obj);
-  }
+	if (Array.isArray(obj)) {
+		obj.forEach(processObject);
+	} else {
+		processObject(obj);
+	}
 
-  return obj;
+	return obj;
 };
 /**
  * Retrieves the error message from a Mongoose error object.
@@ -145,50 +146,50 @@ const renameObjectKey = (field, obj) => {
  * @param {string} [message=""] - The default error message.
  * @returns {string} - The error message.
  */
-const getErrorMessageMongose = (error, message = "") => {
-  if (error.errors) {
-    for (const key in error.errors) {
-      return error.errors[key]?.properties.message;
-    }
-  }
-  return message;
+const getErrorMessageMongose = (error, message = '') => {
+	if (error.errors) {
+		for (const key in error.errors) {
+			return error.errors[key]?.properties.message;
+		}
+	}
+	return message;
 };
 /**
  * Object containing validation methods.
  * @namespace isValidation
  */
 const isValidation = {
-  /**
-   * Checks if the input is a valid email address.
-   * @memberof isValidation
-   * @param {string} input - The input to be validated.
-   * @returns {boolean} - Returns true if the input is a valid email address, otherwise false.
-   */
-  isEmail: (input) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(input);
-  },
-  /**
-   * Checks if the input is a valid phone number.
-   * @memberof isValidation
-   * @param {string} input - The input to be validated.
-   * @returns {boolean} - Returns true if the input is a valid phone number, otherwise false.
-   */
-  isPhoneNumber: (input) => {
-    var phonePattern =
-      /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
-    return phonePattern.test(input);
-  },
-  /**
-   * Checks if the input is a valid username.
-   * @memberof isValidation
-   * @param {string} input - The input to be validated.
-   * @returns {boolean} - Returns true if the input is a valid username, otherwise false.
-   */
-  isUserName: (input) => {
-    var usernamePattern = /^\w{4,16}$/;
-    return usernamePattern.test(input);
-  },
+	/**
+	 * Checks if the input is a valid email address.
+	 * @memberof isValidation
+	 * @param {string} input - The input to be validated.
+	 * @returns {boolean} - Returns true if the input is a valid email address, otherwise false.
+	 */
+	isEmail: (input) => {
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailPattern.test(input);
+	},
+	/**
+	 * Checks if the input is a valid phone number.
+	 * @memberof isValidation
+	 * @param {string} input - The input to be validated.
+	 * @returns {boolean} - Returns true if the input is a valid phone number, otherwise false.
+	 */
+	isPhoneNumber: (input) => {
+		var phonePattern =
+			/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+		return phonePattern.test(input);
+	},
+	/**
+	 * Checks if the input is a valid username.
+	 * @memberof isValidation
+	 * @param {string} input - The input to be validated.
+	 * @returns {boolean} - Returns true if the input is a valid username, otherwise false.
+	 */
+	isUserName: (input) => {
+		var usernamePattern = /^\w{4,16}$/;
+		return usernamePattern.test(input);
+	}
 };
 
 /**
@@ -200,19 +201,19 @@ const isValidation = {
  * @returns {Object} - The modified object with prefixed keys.
  */
 function addPrefixToKeys(obj, prefix, excludedKeys = []) {
-  const newObj = {};
+	const newObj = {};
 
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      // Kiểm tra xem key có nằm trong danh sách excludedKeys không
-      if (excludedKeys.includes(key)) {
-        newObj[key] = obj[key]; // Giữ nguyên key nếu có trong danh sách loại trừ
-      } else {
-        newObj[prefix + key] = obj[key]; // Thêm tiền tố nếu không có trong danh sách loại trừ
-      }
-    }
-  }
-  return newObj;
+	for (const key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			// Kiểm tra xem key có nằm trong danh sách excludedKeys không
+			if (excludedKeys.includes(key)) {
+				newObj[key] = obj[key]; // Giữ nguyên key nếu có trong danh sách loại trừ
+			} else {
+				newObj[prefix + key] = obj[key]; // Thêm tiền tố nếu không có trong danh sách loại trừ
+			}
+		}
+	}
+	return newObj;
 }
 
 /**
@@ -223,148 +224,169 @@ function addPrefixToKeys(obj, prefix, excludedKeys = []) {
  * @returns {Object} - A new object with the prefix removed from the keys.
  */
 const removePrefixFromKeys = (obj, prefix) => {
-  const newObj = {};
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key) && key.startsWith(prefix)) {
-      newObj[key.slice(prefix.length)] = obj[key];
-    } else {
-      newObj[key] = obj[key]; // Giữ nguyên các key không có tiền tố
-    }
-  }
-  return newObj;
+	const newObj = {};
+	for (const key in obj) {
+		if (obj.hasOwnProperty(key) && key.startsWith(prefix)) {
+			newObj[key.slice(prefix.length)] = obj[key];
+		} else {
+			newObj[key] = obj[key]; // Giữ nguyên các key không có tiền tố
+		}
+	}
+	return newObj;
 };
 /**
  * Generates a random ID by combining the current timestamp with a random number.
  * @returns {string} The generated random ID.
  */
 const randomId = () => {
-  return `${Date.now()}${Math.floor(Math.random() * 999)}`;
+	return `${Date.now()}${Math.floor(Math.random() * 999)}`;
 };
 
 function findAndConvertObjectIds(doc) {
-  if (doc instanceof Types.ObjectId) {
-    return doc.toString(); // Chuyển đổi ObjectId đơn lẻ
-  }
+	if (doc instanceof Types.ObjectId) {
+		return doc.toString(); // Chuyển đổi ObjectId đơn lẻ
+	}
 
-  if (Array.isArray(doc)) {
-    return doc.map(findAndConvertObjectIds); // Xử lý mảng
-  }
+	if (Array.isArray(doc)) {
+		return doc.map(findAndConvertObjectIds); // Xử lý mảng
+	}
 
-  if (typeof doc === "object" && doc !== null) {
-    for (const key in doc) {
-      doc[key] = findAndConvertObjectIds(doc[key]); // Duyệt qua các thuộc tính
-    }
-  }
+	if (typeof doc === 'object' && doc !== null) {
+		for (const key in doc) {
+			doc[key] = findAndConvertObjectIds(doc[key]); // Duyệt qua các thuộc tính
+		}
+	}
 
-  return doc;
+	return doc;
 }
+/**
+ * Converts ObjectId instances to strings and processes arrays and nested objects recursively.
+ *
+ * @param {Object} data - The data object to be processed.
+ * @param {Object} grant - An object containing a filter method to apply to the processed data.
+ * @returns {Object} - The processed data after applying the filter method from the grant object.
+ */
 const filterConvert = (data, grant) => {
-  for (const key in data) {
-    
-    if (data[key] instanceof Types.ObjectId) {
-      data[key] = data[key].toString();
-    } else if (Array.isArray(data[key])) {
-      // Nếu là mảng, xử lý từng phần tử
-      data[key] = data[key].map((item) =>
-        typeof item === "object" && item !== null
-          ? filterConvert(item, grant)
-          : item.toString()
-      );
-    } else if (typeof data[key] === "object" && data[key] !== null) {
-      // Nếu là object, đệ quy xử lý
-      for (const k in data[key]) {
-        if (data[key][k] instanceof Types.ObjectId) {
-          data[key][k] = data[key][k].toString();
-        }
-      }
-    }
-  }
+	if (typeof data === 'string' || typeof data === 'number') return data;
+	for (const key in data) {
+		if (data[key] instanceof Types.ObjectId) {
+			data[key] = data[key].toString();
+		} else if (Array.isArray(data[key])) {
+			// Nếu là mảng, xử lý từng phần tử
+			data[key] = data[key].map((item) =>
+				typeof item === 'object' && item !== null
+					? filterConvert(item, grant)
+					: item.toString()
+			);
+		} else if (typeof data[key] === 'object' && data[key] !== null) {
+			// Nếu là object, đệ quy xử lý
+			for (const k in data[key]) {
+				if (data[key][k] instanceof Types.ObjectId) {
+					data[key][k] = data[key][k].toString();
+				}
+			}
+		}
+	}
 
-  return grant.filter(data);
+	return grant.filter(data);
 };
 
-function createJoiSchemaFromMongoose(model, prefix = "") {
-  const mongooseSchema = model.schema; // Lấy schema từ model
+function createJoiSchemaFromMongoose(model, prefix = '') {
+	const mongooseSchema = model.schema; // Lấy schema từ model
 
-  const joiSchemaDefinition = {};
+	const joiSchemaDefinition = {};
 
-  for (const key in mongooseSchema.obj) {
-    const field = mongooseSchema.obj[key];
-    let joiField;
-    switch (field.type) {
-      case String:
-        joiField = Joi.string();
-        break;
-      case Number:
-        joiField = Joi.number();
-        break;
-      case Boolean:
-        joiField = Joi.boolean();
-        break;
-      case Date:
-        joiField = Joi.date();
-        break;
-      default:
-        joiField = Joi.any(); // Nếu không biết kiểu, mặc định là Joi.any()
-    }
-    if (field.required) {
-      joiField = joiField.required();
-    }
-    // // Kiểm tra các ràng buộc khác như min hoặc max (nếu có)
-    if (field.min) {
-      joiField = joiField.min(field.min[0]);
-    }
-    if (field.max) {
-      joiField = joiField.max(field.max[0]);
-    }
-    joiSchemaDefinition[key.slice(prefix.length)] = joiField;
-  }
-  return Joi.object(joiSchemaDefinition);
+	for (const key in mongooseSchema.obj) {
+		const field = mongooseSchema.obj[key];
+		let joiField;
+		switch (field.type) {
+			case String:
+				joiField = Joi.string();
+				break;
+			case Number:
+				joiField = Joi.number();
+				break;
+			case Boolean:
+				joiField = Joi.boolean();
+				break;
+			case Date:
+				joiField = Joi.date();
+				break;
+			default:
+				joiField = Joi.any(); // Nếu không biết kiểu, mặc định là Joi.any()
+		}
+		if (field.required) {
+			joiField = joiField.required();
+		}
+		// // Kiểm tra các ràng buộc khác như min hoặc max (nếu có)
+		if (field.min) {
+			joiField = joiField.min(field.min[0]);
+		}
+		if (field.max) {
+			joiField = joiField.max(field.max[0]);
+		}
+		joiSchemaDefinition[key.slice(prefix.length)] = joiField;
+	}
+	return Joi.object(joiSchemaDefinition);
 }
 const getCurrency = (currency) => {
-  switch (currency) {
-    case "US":
-      return "USD";
-    case "GB":
-      return "GBP";
-    case "ID":
-      return "IDR";
-    case "TH":
-      return "THB";
-    case "MY":
-      return "MYR";
-    case "PH":
-      return "PHP";
-    case "VN":
-      return "VND";
-    case "SG":
-      return "SGD";
-    default:
-      return "VND";
-  }
+	switch (currency) {
+		case 'US':
+			return 'USD';
+		case 'GB':
+			return 'GBP';
+		case 'ID':
+			return 'IDR';
+		case 'TH':
+			return 'THB';
+		case 'MY':
+			return 'MYR';
+		case 'PH':
+			return 'PHP';
+		case 'VN':
+			return 'VND';
+		case 'SG':
+			return 'SGD';
+		default:
+			return 'VND';
+	}
 };
-const createMongoObjectId=()=>{
-  return new Types.ObjectId();
-}
+const createMongoObjectId = () => {
+	return new Types.ObjectId();
+};
+const generatedKey = (length = 2048) => {
+	return generateKeyPairSync('rsa', {
+		modulusLength: length,
+		publicKeyEncoding: {
+			type: 'pkcs1',
+			format: 'pem'
+		},
+		privateKeyEncoding: {
+			type: 'pkcs1',
+			format: 'pem'
+		}
+	});
+};
 module.exports = {
-  filterConvert,
-  getInfoData,
-  getSelectData,
-  unGetSelectData,
-  removeUndefineObject,
-  updateNestedObject,
-  omitInfoData,
-  convertToObjectIdMongoose,
-  renameObjectKey,
-  getErrorMessageMongose,
-  convertToArray,
-  isValidation,
-  converToUUIDMongoose,
-  addPrefixToKeys,
-  removePrefixFromKeys,
-  randomId,
-  findAndConvertObjectIds,
-  createJoiSchemaFromMongoose,
-  getCurrency,
-  createMongoObjectId
+	generatedKey,
+	filterConvert,
+	getInfoData,
+	getSelectData,
+	unGetSelectData,
+	removeUndefineObject,
+	updateNestedObject,
+	omitInfoData,
+	convertToObjectIdMongoose,
+	renameObjectKey,
+	getErrorMessageMongose,
+	convertToArray,
+	isValidation,
+	converToUUIDMongoose,
+	addPrefixToKeys,
+	removePrefixFromKeys,
+	randomId,
+	findAndConvertObjectIds,
+	createJoiSchemaFromMongoose,
+	getCurrency,
+	createMongoObjectId
 };

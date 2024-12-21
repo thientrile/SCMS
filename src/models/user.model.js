@@ -26,7 +26,7 @@ const userSchema = new Schema(
 		usr_sex: { type: String, default: '' },
 		usr_avatar: { type: String, default: '' },
 		usr_date_of_birth: { type: Date, default: null },
-		usr_role: { type: Schema.Types.ObjectId, ref: 'Role', default: null },
+		// usr_role: { type: Schema.Types.ObjectId, ref: 'Role', default: null },
 		usr_status: {
 			type: String,
 			default: 'active',

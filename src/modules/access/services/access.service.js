@@ -8,7 +8,9 @@ const {
 	getErrorMessageMongose,
 
 	addPrefixToKeys,
-	randomId
+	randomId,
+	generatedKey,
+	removePrefixFromKeys
 } = require('../../../utils/index');
 const { generateKeyPairSync } = require('node:crypto');
 const {
@@ -41,29 +43,15 @@ const Joi = require('joi');
  */
 const handlerRefreshToken = async (keyStore, user, refreshToken) => {
 	const key = await findByClientId(keyStore.tk_clientId);
-	const { publicKey, privateKey } = generateKeyPairSync('rsa', {
-		modulusLength: 2048,
-		publicKeyEncoding: {
-			type: 'pkcs1',
-			format: 'pem'
-		},
-		privateKeyEncoding: {
-			type: 'pkcs1',
-			format: 'pem'
-		}
-	});
+
+	const publicKey = key.tk_publicKey;
+	const privateKey = key.tk_privateKey;
 	const [tokens] = await Promise.all([
-		createTokenPair(
-			{ _id: user._id, slug: user.slug, role: user.role },
-			publicKey,
-			privateKey
-		),
+		createTokenPair({ _info: user }, publicKey, privateKey),
 		updateById(key._id, {
 			$push: {
 				tk_refreshTokensUsed: refreshToken // Mark as used,
-			},
-			tk_publicKey: publicKey,
-			expiresAt: Date.now() + 1209600000
+			}
 		})
 	]);
 
@@ -94,31 +82,19 @@ const login = async ({ username, password }) => {
 		throw new AuthFailureError(' Password is not correct');
 	}
 
-	const { publicKey, privateKey } = generateKeyPairSync('rsa', {
-		modulusLength: 2048,
-		publicKeyEncoding: {
-			type: 'pkcs1',
-			format: 'pem'
-		},
-		privateKeyEncoding: {
-			type: 'pkcs1',
-			format: 'pem'
-		}
-	});
+	const { publicKey, privateKey } = generatedKey();
 
 	//create token pair
-
+	const _info = removePrefixFromKeys(user, 'usr_');
 	const [result, tokens] = await Promise.all([
 		createKeyToken({
 			userId: user._id,
-			publicKey: publicKey
+			publicKey: publicKey,
+			privateKey
 		}),
 		createTokenPair(
 			{
-				_id: user._id,
-				username,
-				slug: user.usr_slug,
-				role: user.usr_role
+				_info
 			},
 			publicKey.toString(),
 			privateKey
@@ -151,14 +127,10 @@ const login = async ({ username, password }) => {
 const signinup = async (payload) => {
 	// hash the password
 	payload.id = parseInt(randomId());
-	const [passwordHash, roleId] = await Promise.all([
-		await bcrypt.hash(payload.password, 10),
-		await registerRoleForUser(`user${payload.id}`)
-	]);
+	const passwordHash = await bcrypt.hash(payload.password, 10);
 
 	// check type username
 	payload.salt = passwordHash;
-	payload.role = roleId;
 	let userData = addPrefixToKeys(payload, 'usr_');
 	if (payload.username) {
 		const { username } = payload;
@@ -182,25 +154,18 @@ const signinup = async (payload) => {
 	});
 	//create public key and private key
 
-	const { publicKey, privateKey } = generateKeyPairSync('rsa', {
-		modulusLength: 2048,
-		publicKeyEncoding: {
-			type: 'pkcs1',
-			format: 'pem'
-		},
-		privateKeyEncoding: {
-			type: 'pkcs1',
-			format: 'pem'
-		}
-	});
-
+	const { publicKey, privateKey } = generatedKey();
+	const _info = removePrefixFromKeys(user, 'usr_');
 	const [result, tokens] = await Promise.all([
 		createKeyToken({
 			userId: user._id,
-			publicKey: publicKey
+			publicKey,
+			privateKey
 		}),
 		createTokenPair(
-			{ _id: user._id, slug: user.urs_slug, role: roleId },
+			{
+				_info
+			},
 			publicKey.toString(),
 			privateKey
 		)
