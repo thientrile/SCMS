@@ -12,6 +12,7 @@ const { generateKeyPairSync } = require('node:crypto');
 const _ = require('lodash');
 const { Types } = require('mongoose');
 const Joi = require('joi');
+const { type } = require('node:os');
 /**
  * Retrieves specified fields from an object.
  *
@@ -267,7 +268,12 @@ function findAndConvertObjectIds(doc) {
  * @returns {Object} - The processed data after applying the filter method from the grant object.
  */
 const filterConvert = (data, grant) => {
-	if (typeof data === 'string' || typeof data === 'number') return data;
+	if (
+		typeof data === 'string' ||
+		typeof data === 'number' ||
+		typeof data === 'boolean'
+	)
+		return data;
 	for (const key in data) {
 		if (data[key] instanceof Types.ObjectId) {
 			data[key] = data[key].toString();

@@ -28,6 +28,11 @@ const moduleSchema = new Schema(
 			type: String,
 			default: null
 		},
+		mds_menu: {
+			type: Array,
+			default: []
+		},
+
 		mds_df_roleId: {
 			type: Schema.Types.ObjectId,
 			ref: 'Role'

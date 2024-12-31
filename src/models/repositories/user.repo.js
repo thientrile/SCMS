@@ -2,8 +2,8 @@
 
 'use strict';
 
-const userModel = require('../models/user.model');
-const { isValidation, convertToObjectIdMongoose } = require('../utils/index');
+const userModel = require('../user.model');
+const { isValidation, convertToObjectIdMongoose } = require('../../utils/index');
 
 const checkUserExistById = async (id) => {
 	return userModel.findById(id).lean();

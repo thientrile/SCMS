@@ -7,44 +7,44 @@ const documentName = 'Shop';
 const collectionName = 'Shops';
 const shopSchema = new Schema(
 	{
-		shop_userId: {
+		shp_userId: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 			required: true
 		},
-		shop_avatar:{
+		shp_avatar: {
 			type: String,
 			default: ''
 		},
-		shop_code: {
+		shp_code: {
 			type: String,
 			required: true,
 			unique: true
 		},
-		shop_name: {
+		shp_name: {
 			type: String,
 			required: true,
 			unique: true
 		},
-		shop_description: {
+		shp_description: {
 			type: String,
 			required: true
 		},
-		shop_status: {
+		shp_status: {
 			type: String,
 			enum: ['active', 'inactive', 'pending'],
 			default: 'active'
 		},
-		shop_verify: {
+		shp_verify: {
 			type: Boolean,
 			default: false
 		},
-		shop_type:{
+		shp_type: {
 			type: String,
 			enum: ['single', 'multi'],
 			default: 'single'
-		},		
-		shop_slug: {
+		},
+		shp_slug: {
 			type: String,
 			unique: true
 		}
@@ -55,7 +55,7 @@ const shopSchema = new Schema(
 	}
 );
 shopSchema.pre('save', function (next) {
-	this.shop_slug = `shopui${randomId()}`;
+	this.shp_slug = `shopui${randomId()}`;
 
 	next();
 });

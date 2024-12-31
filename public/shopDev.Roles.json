@@ -1,0 +1,775 @@
+[{
+  "_id": {
+    "$oid": "67650612d34ccee6c673e760"
+  },
+  "rol_name": "Shops",
+  "rol_status": "active",
+  "rol_description": "",
+  "rol_parents": [
+    {
+      "_id": {
+        "$oid": "66a0cab57cce209f373f7cdc"
+      }
+    }
+  ],
+  "rol_isRoot": true,
+  "rol_grants": [
+    {
+      "resourceId": {
+        "$oid": "6756a221ccb27fd3fb34a925"
+      },
+      "actions": [
+        "read:own",
+        "create:own",
+        "update:own"
+      ],
+      "attributes": "*",
+      "isRoot": false,
+      "_id": {
+        "$oid": "67650feaccef061e0e27ddc3"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2024-12-20T05:52:18.554Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-20T06:34:18.091Z"
+  },
+  "rol_slug": "rui17346739385553",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66a0cab57cce209f373f7cdc"
+  },
+  "rol_name": "Admins",
+  "rol_slug": "0",
+  "rol_status": "active",
+  "rol_description": "",
+  "rol_grants": [
+    {
+      "resourceId": {
+        "$oid": "6756a221ccb27fd3fb34a925"
+      },
+      "actions": [
+        "read:any",
+        "create:any",
+        "update:any",
+        "delete:any"
+      ],
+      "attributes": "*",
+      "isRoot": true,
+      "_id": {
+        "$oid": "675d8a79908dd0bc43e2c59b"
+      }
+    },
+    {
+      "resourceId": {
+        "$oid": "6756a221ccb27fd3fb34a92b"
+      },
+      "actions": [
+        "read:any",
+        "create:any",
+        "update:any",
+        "delete:any"
+      ],
+      "attributes": "*",
+      "isRoot": true,
+      "_id": {
+        "$oid": "675d8a79908dd0bc43e2c59c"
+      }
+    },
+    {
+      "resourceId": {
+        "$oid": "6763e31603058d2c0e4d3869"
+      },
+      "actions": [
+        "create:any"
+      ],
+      "attributes": "*",
+      "isRoot": false,
+      "_id": {
+        "$oid": "67650ecee5f6d6f9bbcd0f6e"
+      }
+    },
+    {
+      "resourceId": {
+        "$oid": "6763e31603058d2c0e4d3869"
+      },
+      "actions": [
+        "read:any"
+      ],
+      "attributes": "*,!_id,!id",
+      "isRoot": false,
+      "_id": {
+        "$oid": "676529fa6280c2fa2d360edc"
+      }
+    }
+  ],
+  "updatedAt": {
+    "$date": "2024-12-20T08:39:04.376Z"
+  },
+  "rol_parents": [],
+  "createdAt": {
+    "$date": "1999-12-31T17:00:00.000Z"
+  },
+  "rol_isRoot": true
+},
+{
+  "_id": {
+    "$oid": "66a0cea15116b4fd19e0c8e9"
+  },
+  "rol_name": "Users",
+  "rol_status": "active",
+  "rol_description": " user",
+  "rol_grants": [
+    {
+      "resourceId": {
+        "$oid": "675a7e9065886b0f4d4fb350"
+      },
+      "actions": [
+        "read:any"
+      ],
+      "attributes": "!salt,!_id,!role,!__v,!updatedAt,!createdAt,!id,!slug,*,!status",
+      "isRoot": true,
+      "_id": {
+        "$oid": "675a7ea365886b0f4d4fb36f"
+      }
+    },
+    {
+      "resourceId": {
+        "$oid": "675a7e9065886b0f4d4fb350"
+      },
+      "actions": [
+        "update:own"
+      ],
+      "attributes": "*,!id,!updatedAt,!createdAt,!_id,!role",
+      "isRoot": false,
+      "_id": {
+        "$oid": "675ee4ab9feb6189c5a7d551"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2024-07-24T09:51:29.051Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-22T19:10:27.232Z"
+  },
+  "rol_slug": "1",
+  "__v": 0,
+  "rol_parents": [
+    {
+      "_id": {
+        "$oid": "66a0cab57cce209f373f7cdc"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675a98352c3e0fbd5760d4bc"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675d3cc578f13a6ca37fb8f8"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675d3d26f26c05127f806759"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675d45bb8e56f993c38118fa"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69cedc545fae825b0718"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69d1dc545fae825b0723"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69d3dc545fae825b072e"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69d5dc545fae825b0739"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69d7dc545fae825b0744"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69d9dc545fae825b074f"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69dbdc545fae825b075a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69dddc545fae825b0765"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69eadc545fae825b07bd"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69ebdc545fae825b07c8"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69f4dc545fae825b07d3"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e69f5dc545fae825b07de"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a3adc545fae825b07e9"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a3adc545fae825b07f4"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a3bdc545fae825b07ff"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a3cdc545fae825b080a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a3ddc545fae825b0815"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a3edc545fae825b0820"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a3edc545fae825b082b"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a3fdc545fae825b0836"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a40dc545fae825b0841"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a40dc545fae825b084c"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a41dc545fae825b0857"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a42dc545fae825b0862"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a42dc545fae825b086d"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a43dc545fae825b0878"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a44dc545fae825b0883"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a44dc545fae825b088e"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a45dc545fae825b0899"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a45dc545fae825b08a4"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a46dc545fae825b08af"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a47dc545fae825b08ba"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a47dc545fae825b08c5"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a48dc545fae825b08d0"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a49dc545fae825b08db"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a49dc545fae825b08e6"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a4adc545fae825b08f1"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a4bdc545fae825b08fc"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a4cdc545fae825b0907"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a4cdc545fae825b0912"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a4ddc545fae825b091d"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a4edc545fae825b0928"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a4fdc545fae825b0933"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a4fdc545fae825b093e"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a50dc545fae825b0949"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a51dc545fae825b0954"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a51dc545fae825b095f"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a52dc545fae825b096a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a53dc545fae825b0975"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a54dc545fae825b0980"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a54dc545fae825b098b"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a55dc545fae825b0996"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a56dc545fae825b09a1"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a56dc545fae825b09ac"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a57dc545fae825b09b7"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a57dc545fae825b09c2"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a58dc545fae825b09cd"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a59dc545fae825b09d8"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a59dc545fae825b09e3"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a5adc545fae825b09ee"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a5bdc545fae825b09f9"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a5cdc545fae825b0a04"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a5cdc545fae825b0a0f"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a5ddc545fae825b0a1a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a5edc545fae825b0a25"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a5edc545fae825b0a30"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a5fdc545fae825b0a3b"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a60dc545fae825b0a46"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a61dc545fae825b0a51"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a61dc545fae825b0a5c"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a62dc545fae825b0a67"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a63dc545fae825b0a72"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a63dc545fae825b0a7d"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a64dc545fae825b0a88"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a64dc545fae825b0a93"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a65dc545fae825b0a9e"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a66dc545fae825b0aa9"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a67dc545fae825b0ab4"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a67dc545fae825b0abf"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a68dc545fae825b0aca"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a69dc545fae825b0ad5"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a69dc545fae825b0ae0"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6adc545fae825b0aeb"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6adc545fae825b0af6"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6bdc545fae825b0b01"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6cdc545fae825b0b0c"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6cdc545fae825b0b17"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6ddc545fae825b0b22"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6edc545fae825b0b2d"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6fdc545fae825b0b38"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a6fdc545fae825b0b43"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a70dc545fae825b0b4e"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a71dc545fae825b0b59"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a71dc545fae825b0b64"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a72dc545fae825b0b6f"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a73dc545fae825b0b7a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a73dc545fae825b0b85"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a74dc545fae825b0b90"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a75dc545fae825b0b9b"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a75dc545fae825b0ba6"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a76dc545fae825b0bb1"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a77dc545fae825b0bbc"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a77dc545fae825b0bc7"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a78dc545fae825b0bd2"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a79dc545fae825b0bdd"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a79dc545fae825b0be8"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a7adc545fae825b0bf3"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a7bdc545fae825b0bfe"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a7bdc545fae825b0c09"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a7cdc545fae825b0c14"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a7ddc545fae825b0c1f"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675e6a7edc545fae825b0c2a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675ee391f538930eb034cfd2"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675ee4fbac4d74c5f9cc8611"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675ee8b9f38446a9baca778a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675f2642fbf41ee7e6b975f2"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "675f427ff3fc8f88b06fa7e8"
+      }
+    }
+  ],
+  "rol_isRoot": true
+}]

@@ -16,7 +16,7 @@ const {
 	SuccessReponse,
 	CREATED,
 	OK
-} = require('../../../core/success.response');
+} = require('@core/success.response');
 const { deleteResource } = require('../services/resource.service');
 const SetGrants = async (req, res) => {
 	new SuccessReponse({
@@ -25,10 +25,11 @@ const SetGrants = async (req, res) => {
 	}).send(req, res);
 };
 const GetResources = async (req, res) => {
+	const { totalCount, paginatedResults } = await resourceList(req.query);
 	new OK({
 		message: 'Resources was fetched successfully',
-		metadata: await resourceList(req.query),
-		options: req.query
+		metadata: paginatedResults,
+		options: { ...req.query, size: totalCount }
 	}).send(req, res);
 };
 const GetRoles = async (req, res) => {
@@ -47,7 +48,7 @@ const CreateResource = async (req, res) => {
 	new CREATED({
 		message: 'Resource was created successfully',
 		metadata: await createResource(req.body)
-	}).grants(req, res);
+	}).send(req, res);
 };
 const CreateRole = async (req, res) => {
 	new CREATED({

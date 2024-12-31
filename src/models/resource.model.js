@@ -10,14 +10,14 @@ const COLLECTTION_NAME = 'Resources';
 const resourceSchema = new Schema(
 	{
 		src_name: { type: String, required: true, unique: true }, //profile
-		src_slug: { type: String, unique: true, default: `sui${randomId()}` }, // 000001
+		src_slug: { type: String, unique: true }, // 000001
 		src_description: { type: String, default: '' },
 		src_isRoot: { type: Boolean, default: false },
-		src_menu: [{}],
 		src_attr: {
 			type: Array,
 			default: []
-		}
+		},
+		src_icon: { type: String, default: '' }
 	},
 	{
 		timestamps: true,

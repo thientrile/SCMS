@@ -3,8 +3,8 @@ const {
 	SuccessReponse,
 	CREATED,
 	OK
-} = require('../../../core/success.response');
-const { autoGenerateResource } = require('../services/resource.service');
+} = require('@core/success.response');
+const { autoGenerateResource, updateOneResource } = require('../services/resource.service');
 
 const AutoImportResource = async (req, res) => {
   new SuccessReponse({
@@ -12,4 +12,11 @@ const AutoImportResource = async (req, res) => {
     metadata: await autoGenerateResource()
   }).send(req, res);
 }
-module.exports = {AutoImportResource};
+const updateResource=async (req,res)=>{
+  new SuccessReponse({
+    message: 'Resource was updated successfully',
+    metadata: await updateOneResource(req.body)
+  }).send(req, res);
+}
+
+module.exports = {AutoImportResource,updateResource};

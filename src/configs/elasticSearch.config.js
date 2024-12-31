@@ -4,7 +4,7 @@ const { Client } = require("@elastic/elasticsearch");
 const { ElasticsearchErrorRespoint } = require("../core/error.response"); // Assuming you have a custom error response module
 const env = process.env;
 let clients = {}; // Multiple clients for multiple connections
-
+const{db}=require('./init.config');
 const instanceEventListeners = async (elasticClient) => {
   try {
     await elasticClient.ping();
@@ -14,22 +14,13 @@ const instanceEventListeners = async (elasticClient) => {
   }
 };
 
-const init = (is_enable = 1) => {
+const init = (is_enable = 0) => {
   const isEnabled = env.ELASTICSEARCH_IS_ENABLED || is_enable;
   
   if (isEnabled == 1) {
     try {
-      const elasticClient = new Client({
-        node: env.ELASTICSEARCH_HOST,
-        auth: {
-          username: env.ELASTICSEARCH_USERNAME,
-          password: env.ELASTICSEARCH_PASSWORD,
-        },
-        tls: {
-          // ca: fs.readFileSync('./http_ca.crt'),
-          rejectUnauthorized: false, // Use only in development
-        },
-      });
+
+      const elasticClient = new Client(db.es);
       clients.elasticClient = elasticClient;
       instanceEventListeners(elasticClient);
     } catch (err) {

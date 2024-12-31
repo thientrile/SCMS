@@ -1,7 +1,7 @@
 /** @format */
 
 const { randomBytes } = require('node:crypto');
-const { createApiKey, findApikey } = require('../../../repositories/apiKey.repo');
+const { createApiKey, findApikey } = require('@repositories/apiKey.repo');
 const createCode = async (premissions = 'access') => {
 	const newKey = await createApiKey({
 		app_code: randomBytes(16).toString('hex'),

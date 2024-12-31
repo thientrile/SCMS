@@ -2,7 +2,7 @@
 
 'use strict';
 const bcrypt = require('bcrypt');
-const userModel = require('../../../models/user.model');
+const userModel = require('@models/user.model');
 const {
 	isValidation,
 	getErrorMessageMongose,
@@ -11,24 +11,19 @@ const {
 	randomId,
 	generatedKey,
 	removePrefixFromKeys
-} = require('../../../utils/index');
-const { generateKeyPairSync } = require('node:crypto');
-const {
-	ForbiddenError,
-	AuthFailureError
-} = require('../../../core/error.response');
+} = require('@utils/index');
+const { ForbiddenError, AuthFailureError } = require('@core/error.response');
 const {
 	createKeyToken,
 	deleteByClientId,
 	findByClientId,
 	updateById
 } = require('./keyToken.services');
-const { createTokenPair } = require('../../../auth/utils.auth');
+const { createTokenPair } = require('@auth/utils.auth');
 const {
 	userDeleteById,
 	userFindByusername
-} = require('../../../repositories/user.repo');
-const { registerRoleForUser } = require('../../admin/services/role.service');
+} = require('@models/repositories/user.repo');
 const Joi = require('joi');
 
 // refetch token
@@ -42,21 +37,21 @@ const Joi = require('joi');
  * @throws {AuthFailureError} - Throws an AuthFailureError if the refresh token has expired.
  */
 const handlerRefreshToken = async (keyStore, user, refreshToken) => {
-	const key = await findByClientId(keyStore.tk_clientId);
+	const key = await findByClientId(keyStore.tkn_clientId);
 
-	const publicKey = key.tk_publicKey;
-	const privateKey = key.tk_privateKey;
+	const publicKey = key.tkn_publicKey;
+	const privateKey = key.tkn_privateKey;
 	const [tokens] = await Promise.all([
 		createTokenPair({ _info: user }, publicKey, privateKey),
 		updateById(key._id, {
 			$push: {
-				tk_refreshTokensUsed: refreshToken // Mark as used,
+				tkn_refreshTokensUsed: refreshToken // Mark as used,
 			}
 		})
 	]);
 
 	return {
-		uniqueId: key.tk_clientId,
+		uniqueId: key.tkn_clientId,
 		tokens
 	};
 };
@@ -155,7 +150,7 @@ const signinup = async (payload) => {
 	//create public key and private key
 
 	const { publicKey, privateKey } = generatedKey();
-	const _info = removePrefixFromKeys(user, 'usr_');
+	const _info = removePrefixFromKeys(user.toObject(), 'usr_');
 	const [result, tokens] = await Promise.all([
 		createKeyToken({
 			userId: user._id,
@@ -181,7 +176,7 @@ const signinup = async (payload) => {
 };
 // logout
 const logout = async (keyStore) => {
-	return await deleteByClientId(keyStore.tk_clientId)
+	return await deleteByClientId(keyStore.tkn_clientId)
 		.then(() => 1)
 		.catch(() => {
 			throw new AuthFailureError(' Unable to logout account');

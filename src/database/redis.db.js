@@ -14,7 +14,6 @@ const client = getRedis().intanceConnect;
  */
 const setData = async (key, value, expireTime = 30) => {
 	try {
-    console.log('Redis set Data::',key);
 		const data = JSON.stringify(value);
 
 		if (expireTime) {
@@ -23,19 +22,16 @@ const setData = async (key, value, expireTime = 30) => {
 			await client.set(key, data); // Simple set without expiration
 		}
 	} catch (err) {
-		console.log('redis error'.err);
+		console.error('redis error'.err);
 	}
 };
 const getData = async (key) => {
-
 	const data = await client.get(key);
 	return JSON.parse(data);
 };
 
-
 const incr = async (key, ttl = 60) => {
 	try {
-   
 		const result = await client.incr(key);
 		if (result === 1) {
 			await client.expire(key, ttl);
@@ -49,5 +45,4 @@ module.exports = {
 	setData,
 	getData,
 	incr
-
 };

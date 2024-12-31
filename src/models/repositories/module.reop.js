@@ -2,7 +2,7 @@
 
 'use strict';
 
-const Md = require('../models/module.model');
+const Md = require('../module.model');
 const listModules = async () => {
 	return Md.aggregate([
 		{

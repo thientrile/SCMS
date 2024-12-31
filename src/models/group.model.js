@@ -10,6 +10,10 @@ const groupSchema = new Schema(
 			type: String,
 			required: true
 		},
+		grp_info: {
+			type: Schema.Types.Mixed,
+			default: {}
+		},
 		grp_code: {
 			type: String,
 			required: true,

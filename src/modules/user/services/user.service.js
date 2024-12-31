@@ -2,11 +2,11 @@
 
 'use strict';
 const { number } = require('joi');
-const userModel = require('../../../models/user.model');
+const userModel = require('@models/user.model');
 const {
 	removePrefixFromKeys,
 	convertToObjectIdMongoose
-} = require('../../../utils');
+} = require('@utils');
 
 const getUserInfo = async (userId) => {
 	const result = await userModel

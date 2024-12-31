@@ -2,11 +2,12 @@
 
 'use strict';
 const { connection, modelNames } = require('mongoose');
-const ResourceModel = require('../../../models/resource.model');
-const { initAccessControl } = require('../../../middlewares/rbac.middleware');
-const { convertToObjectIdMongoose } = require('../../../utils');
-const { BadRequestError } = require('../../../core/error.response');
-const { createResource } = require('./rbac.service');
+const ResourceModel = require('@models/resource.model');
+const {
+	convertToObjectIdMongoose,
+	addPrefixToKeys
+} = require('../../../utils');
+const { BadRequestError } = require('@core/error.response');
 
 const autoGenerateResource = async () => {
 	const colls = modelNames().map((modelName) => {
@@ -22,7 +23,7 @@ const autoGenerateResource = async () => {
 		});
 		return { name: modelName + 's', attr: attributes };
 	});
-	// console.log('🚀 ~ attributes ~ attributes:', colls);
+	// const listName = colls.map((item) => item.name);
 	const createdResource = colls.map(async (item) => {
 		const check = await ResourceModel.findOneAndUpdate(
 			{ src_name: item.name },
@@ -35,13 +36,15 @@ const autoGenerateResource = async () => {
 				src_name: item.name,
 				src_isRoot: true,
 				src_description: `created by system`,
-				src_attr: item.attr
+				src_attr: item.attr,
+				src_icon: ''
 			});
 		}
 	});
 	await Promise.all(createdResource);
+	
 
-	return 1;
+	return colls;
 };
 const deleteResource = async (payload) => {
 	const { resourceId } = payload;
@@ -53,5 +56,16 @@ const deleteResource = async (payload) => {
 	}
 	return true;
 };
+const updateOneResource = async (payload) => {
+	const data = addPrefixToKeys(payload, 'src_');
+	const result = await ResourceModel.findOneAndUpdate(
+		{ _id: convertToObjectIdMongoose(payload.id) },
+		{ ...data }
+	);
+	if (!result) {
+		throw new BadRequestError('Resource not found');
+	}
+	return true;
+};
 
-module.exports = { autoGenerateResource, deleteResource };
+module.exports = { autoGenerateResource, deleteResource, updateOneResource };

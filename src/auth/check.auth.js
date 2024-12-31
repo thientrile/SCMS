@@ -1,18 +1,18 @@
 /** @format */
 
 'use strict';
-const { findByCode } = require('../modules/access/services/apiKey.service');
-const headers = require('../utils/header');
+const headers = require('@utils/header');
 const {
 	AuthFailureError,
 	NotAcceptableError,
 	TooManyRequestsError
-} = require('../core/error.response');
-const { incr, getData, setData } = require('../database/redis.db');
+} = require('@core/error.response');
+const { incr, getData, setData } = require('@database/redis.db');
 const { createHmac } = require('node:crypto');
-const { checkStatusMd } = require('../repositories/module.reop');
-const { findGroupByCode } = require('../repositories/group.repo');
-const { getIdBySlug } = require('../repositories/role.repo');
+const { checkStatusMd } = require('@repositories/module.reop');
+const { findGroupByCode } = require('@repositories/group.repo');
+const { getIdBySlug } = require('@repositories/role.repo');
+const { findApikey } = require('@repositories/apiKey.repo');
 const apiKey = async (req, res, next) => {
 	try {
 		const key = req.headers[headers.API_KEY];
@@ -25,7 +25,7 @@ const apiKey = async (req, res, next) => {
 			req.objKey = keyRedis;
 			return next();
 		}
-		const apiKey = await findByCode(key);
+		const apiKey = await findApikey({ app_code: key, app_status: true });
 		if (!apiKey) {
 			throw new AuthFailureError(' Key is invalid');
 		}
@@ -45,11 +45,11 @@ const Hmac = (req, res, next) => {
 		const timestamp = req.headers[headers.TIMES];
 
 		if (!timestamp) {
-			throw new AuthFailureError('timestamp');
+			throw new AuthFailureError('Timestamp is invalid');
 		}
 		const time = new Date().getTime();
 		if (time - timestamp > 5000) {
-			throw new AuthFailureError('timestamp is invalid');
+			throw new AuthFailureError('Timestamp is invalid');
 		}
 
 		const reqBody = req.body || {};
@@ -90,12 +90,12 @@ const permission = (permission) => {
 				return next(new NotAcceptableError(' Permission denied'));
 			}
 
-			const checkMd = await getCheckMd(permission);
+			const checkMd = await getCheckMd(permission);			
 			if (!checkMd) {
 				req.roleId = await getRoleId();
 				return next();
 			}
-
+			req.module = checkMd;
 			req.group = await getGroup(checkMd, req.headers[headers.APPCODE]);
 			return next();
 		} catch (err) {

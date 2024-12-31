@@ -2,7 +2,7 @@
 
 'use strict';
 
-const groupModel = require('../models/group.model');
+const groupModel = require('../group.model');
 
 const findGroupByCode = async (code) => {
 	return groupModel.findOne({ grp_code: code, grp_isActive: true });
