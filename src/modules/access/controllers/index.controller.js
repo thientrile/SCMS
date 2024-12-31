@@ -1,7 +1,7 @@
 /** @format */
 
 'use strict';
-const { SuccessReponse, CREATED } = require('../../../core/success.response');
+const { SuccessReponse, CREATED } = require('@core/success.response');
 const {
 	signinup,
 	login,

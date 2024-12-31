@@ -1,4 +1,4 @@
-const apiKeyModel = require('../models/apiKey.model');
+const apiKeyModel = require('../apiKey.model');
 
 
 const findApikey= async (payload)=>{

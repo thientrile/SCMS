@@ -1,0 +1,49 @@
+[{
+  "_id": {
+    "$oid": "67650f8accef061e0e27ddb6"
+  },
+  "grp_name": "admin",
+  "grp_id": 1734676362310110,
+  "grp_moduleId": {
+    "$oid": "67650f8accef061e0e27ddb4"
+  },
+  "grp_isActive": true,
+  "grp_members": [
+    {
+      "userId": {
+        "$oid": "674c6e65685d9d89d6a548cf"
+      },
+      "roleId": {
+        "$oid": "66a0cab57cce209f373f7cdc"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2024-12-20T06:32:42.390Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-20T06:32:42.390Z"
+  },
+  "__v": 0,
+  "grp_code": "admin"
+},
+{
+  "_id": {
+    "$oid": "67650fc1ccef061e0e27ddbe"
+  },
+  "grp_name": "user",
+  "grp_id": 173467641699883,
+  "grp_moduleId": {
+    "$oid": "67650fc0ccef061e0e27ddbc"
+  },
+  "grp_isActive": true,
+  "grp_members": [],
+  "createdAt": {
+    "$date": "2024-12-20T06:33:37.058Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-20T06:33:37.058Z"
+  },
+  "__v": 0,
+  "grp_code": "user"
+}]

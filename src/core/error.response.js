@@ -1,7 +1,7 @@
 /** @format */
 
 'use strict';
-
+const Mylogger = require('../loggers/mylogger.log');
 const { StatusCodes, ReasonPhrases } = require('../utils/HttpStatusCode');
 
 /**
@@ -13,6 +13,7 @@ class ErrorResponse extends Error {
 	constructor(message, status) {
 		super(message);
 		this.status = status;
+		this.now=Date.now();
 	}
 }
 

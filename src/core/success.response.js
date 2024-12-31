@@ -27,8 +27,8 @@ class SuccessReponse {
 			this.metadata = filterConvert(this.metadata, req.grants);
 		}
 		// save cache key for get data have method is GET
-		if (req.cacheKey && this.status < 400) {
-			setData(req.cacheKey, this, 60);
+		if (req.options.redis && this.status < 400) {
+			setData(req.options.keycache, this, req.options.timeSetcache);
 		}
 		return res.status(this.status).json(this);
 	}
@@ -43,8 +43,9 @@ class SuccessReponse {
 }
 
 class OK extends SuccessReponse {
-	constructor({ message, metadata }) {
+	constructor({ message, metadata, options = {} }) {
 		super({ message, metadata });
+		this.options = options;
 	}
 }
 class CREATED extends SuccessReponse {

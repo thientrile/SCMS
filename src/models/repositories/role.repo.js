@@ -2,8 +2,8 @@
 
 'use strict';
 
-const roleModel = require('../models/role.model');
-const { convertToObjectIdMongoose } = require('../utils');
+const roleModel = require('../role.model');
+const { convertToObjectIdMongoose } = require('../../utils');
 const getIdBySlug = async (slug) => {
 	return roleModel.findOne({ rol_slug: slug }).select('_id');
 };
@@ -12,6 +12,62 @@ const getRoleSlug = async (id) => {
 		.findOne({ _id: convertToObjectIdMongoose(id) })
 		.select('rol_slug');
 };
+const getGrantsById = async (id) => {
+	return roleModel.aggregate([
+		{
+			$match: {
+				_id: convertToObjectIdMongoose(id)
+			}
+		},
+		{ $sort: { createdAt: 1 } },
+	
+		{
+			$lookup: {
+				from: 'Resources',
+				localField: 'rol_grants.resourceId',
+				foreignField: '_id',
+				as: 'resource'
+			}
+		},
+		{
+			$unwind: '$resource'
+		},
+		{
+			$project: {
+				role: '$rol_slug',
+				resourceId: '$resource._id',
+				resourceName: '$resource.src_name',
+				icon: '$resource.src_icon',
+				action: '$rol_grants.actions',
+				attributes: '$rol_grants.attributes',
+				createdAt: 1,
+				_id: 0
+			}
+		},
+
+		{
+			$group: {
+				_id: '$resourceId', // Group by resource name
+				actions: {
+					$push: '$action'
+				},
+				label: { $first: '$resourceName' },
+				icon: { $first: '$icon' },
+				createdAt: { $first: '$createdAt' } 
+			}
+		},
+		{
+			$project: {
+				label: 1,
+				actions: '$actions',
+				icon: 1,
+				_id: 1
+			}
+		},
+		{ $sort: { createdAt: 1 } }
+	]);
+};
+
 const getAllGrants = async () => {
 	return roleModel.aggregate([
 		{
@@ -116,7 +172,7 @@ const getListRole = async () => {
 		{
 			$lookup: {
 				from: 'Roles',
-				localField: 'rol_parents._id',
+				localField: 'rol_parents',
 				foreignField: '_id',
 				as: 'parent'
 			}
@@ -216,5 +272,6 @@ module.exports = {
 	getListRole,
 	getAllListRole,
 	getArrSrcByRoleName,
-	getIdBySlug
+	getIdBySlug,
+	getGrantsById
 };

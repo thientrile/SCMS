@@ -1,0 +1,85 @@
+version: "3.8"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.1
+    container_name: es
+    environment:
+      - node.name=es
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.14.1
+    container_name: kibana
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - mongodbdata:/data/db
+    ports:
+      - 27017:27017
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+
+  app:
+    build:
+      context: ./ # Đường dẫn tới thư mục chứa mã nguồn app
+      dockerfile: Dockerfile # Chỉ định Dockerfile của bạn
+    container_name: scms_app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+      - redis
+      - elasticsearch
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./app:/usr/src/app # Nếu bạn muốn đồng bộ mã nguồn giữa local và container trong quá trình phát triển
+    networks:
+      - app_network
+
+  node:
+    image: node:23-alpine # Thay node phiên bản bạn cần sử dụng
+    container_name: node_container
+    command: ["node", "/usr/src/app/server.js"] # Chỉ định entry point ứng dụng Node.js (thay server.js bằng file chính của bạn)
+    volumes:
+      - ./app:/usr/src/app # Mount mã nguồn vào container Node.js
+    ports:
+      - 4000:4000 # Thay port nếu cần
+    depends_on:
+      - redis
+      - mongodb
+      - elasticsearch
+    environment:
+      - NODE_ENV=production
+networks:
+  app_network:
+    driver: bridge
+volumes:
+  esdata:
+    driver: local
+  mongodbdata:
+    driver: local

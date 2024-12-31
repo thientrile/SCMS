@@ -1,17 +1,30 @@
 /** @format */
 
 const { getData } = require('../database/redis.db');
-
-const asyncHandler = (fn) => {
+const createCacheKey = (query) => {
+	return Object.keys(query)
+		.sort((a, b) => a.localeCompare(b))
+		.map((key) => `${key}=${query[key]}`)
+		.join('&')
+		.replace(/[:{}]/g, '=')
+		.replace(/,/g, '')
+		.trim();
+};
+const asyncHandler = (
+	fn,
+	options = {
+		redis: false,
+		timeSetcache: 30
+	}
+) => {
 	return async (req, res, next) => {
 		// save cache key for get data have method is GET
-		if (req.method === 'GET') {
-			const cacheKey = `${req.method}:${req.user._id || 1}:${
+		req.options = options;
+		if (req.method === 'GET' && options.redis) {
+			req.options.keycache = `${req.method}:${req.user._id || 1}:${
 				req.originalUrl
-			}:${JSON.stringify(req.query)}`;
-
-			req.cacheKey = cacheKey;
-			const reslult = await getData(req.cacheKey);
+			}:${createCacheKey(req.query)}`;
+			const reslult = await getData(req.options.keycache);
 			if (reslult) {
 				return res.status(reslult.status).json(reslult);
 			}

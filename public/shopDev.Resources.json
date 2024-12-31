@@ -1,0 +1,324 @@
+[{
+  "_id": {
+    "$oid": "6756a221ccb27fd3fb34a925"
+  },
+  "src_name": "Roles",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2024-12-09T07:53:48.828Z"
+  },
+  "src_description": "created by system",
+  "src_menu": {
+    "mennu": {
+      "create": {
+        "any": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        },
+        "own": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        }
+      },
+      "delete": {
+        "any": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        },
+        "own": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        }
+      },
+      "read": {
+        "any": {
+          "icon": "",
+          "isShow": false,
+          "path": "",
+          "title": ""
+        },
+        "own": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        }
+      },
+      "update": {
+        "any": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        },
+        "own": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        }
+      }
+    },
+    "name": ""
+  },
+  "src_slug": "sui1733730828824944",
+  "updatedAt": {
+    "$date": "2024-12-21T09:30:49.483Z"
+  },
+  "src_isRoot": true,
+  "src_attr": [
+    "name",
+    "slug",
+    "status",
+    "description",
+    "grants",
+    "parents",
+    "isRoot",
+    "_id",
+    "createdAt",
+    "updatedAt",
+    "__v"
+  ]
+},
+{
+  "_id": {
+    "$oid": "6756a221ccb27fd3fb34a92b"
+  },
+  "src_name": "Resources",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2024-12-09T07:53:48.828Z"
+  },
+  "src_description": "created by system",
+  "src_menu": {
+    "mennu": {
+      "create": {
+        "any": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        },
+        "own": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        }
+      },
+      "delete": {
+        "any": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        },
+        "own": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        }
+      },
+      "read": {
+        "any": {
+          "icon": "",
+          "isShow": false,
+          "path": "",
+          "title": ""
+        },
+        "own": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        }
+      },
+      "update": {
+        "any": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        },
+        "own": {
+          "icon": "",
+          "isshow": false,
+          "path": "",
+          "title": ""
+        }
+      }
+    },
+    "name": ""
+  },
+  "src_slug": "sui1733730828824864",
+  "updatedAt": {
+    "$date": "2024-12-21T09:30:49.485Z"
+  },
+  "src_isRoot": true,
+  "src_attr": [
+    "name",
+    "slug",
+    "description",
+    "isRoot",
+    "menu",
+    "attr",
+    "_id",
+    "createdAt",
+    "updatedAt",
+    "__v"
+  ]
+},
+{
+  "_id": {
+    "$oid": "675a7e9065886b0f4d4fb350"
+  },
+  "src_name": "Users",
+  "src_slug": "srcui1733983888458315",
+  "src_description": "created by system",
+  "src_isRoot": true,
+  "src_menu": [],
+  "createdAt": {
+    "$date": "2024-12-12T06:11:28.458Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-21T09:30:49.485Z"
+  },
+  "__v": 0,
+  "src_attr": [
+    "id",
+    "slug",
+    "email",
+    "phone",
+    "name",
+    "salt",
+    "sex",
+    "avatar",
+    "date_of_birth",
+    "status",
+    "_id",
+    "createdAt",
+    "updatedAt",
+    "__v"
+  ]
+},
+{
+  "_id": {
+    "$oid": "675aa0d78072d75dc97fd125"
+  },
+  "src_name": "Keys",
+  "src_slug": "srcui1733992663906862",
+  "src_description": "created by system",
+  "src_isRoot": true,
+  "src_menu": [],
+  "createdAt": {
+    "$date": "2024-12-12T08:37:43.906Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-21T09:30:49.485Z"
+  },
+  "__v": 0,
+  "src_attr": [
+    "userId",
+    "clientId",
+    "publicKey",
+    "privateKey",
+    "refreshTokensUsed",
+    "_id",
+    "createdAt",
+    "updatedAt",
+    "__v"
+  ]
+},
+{
+  "_id": {
+    "$oid": "6763e31603058d2c0e4d3869"
+  },
+  "src_name": "Modules",
+  "src_slug": "srcui1734599446127487",
+  "src_description": "created by system",
+  "src_isRoot": true,
+  "src_menu": [],
+  "src_attr": [
+    "name",
+    "id",
+    "isMgroup",
+    "isActive",
+    "cf_file",
+    "df_roleId",
+    "_id",
+    "createdAt",
+    "updatedAt",
+    "__v"
+  ],
+  "createdAt": {
+    "$date": "2024-12-19T09:10:46.127Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-21T09:30:49.485Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6765361527a2dd98d8fa41d0"
+  },
+  "src_name": "Groups",
+  "src_slug": "srcui1734686229334686",
+  "src_description": "created by system",
+  "src_isRoot": true,
+  "src_menu": [],
+  "src_attr": [
+    "name",
+    "code",
+    "id",
+    "moduleId",
+    "isActive",
+    "members",
+    "_id",
+    "createdAt",
+    "updatedAt",
+    "__v"
+  ],
+  "createdAt": {
+    "$date": "2024-12-20T09:17:09.333Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-21T09:30:49.485Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67668273c9137a6fd845aae6"
+  },
+  "src_name": "ApiKeys",
+  "src_slug": "srcui1734771315711371",
+  "src_description": "created by system",
+  "src_isRoot": true,
+  "src_menu": [],
+  "src_attr": [
+    "code",
+    "status",
+    "permissions",
+    "_id",
+    "createdAt",
+    "updatedAt",
+    "__v"
+  ],
+  "createdAt": {
+    "$date": "2024-12-21T08:55:15.710Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-21T09:30:49.485Z"
+  },
+  "__v": 0
+}]

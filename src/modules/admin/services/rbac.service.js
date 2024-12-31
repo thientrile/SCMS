@@ -1,69 +1,38 @@
 /** @format */
 
 'use strict';
-const ResourceModel = require('../../../models/resource.model');
-const RoleModel = require('../../../models/role.model');
+const ResourceModel = require('@models/resource.model');
+const RoleModel = require('@models/role.model');
 const {
 	convertToObjectIdMongoose,
-	renameObjectKey,
 	addPrefixToKeys,
-	createMongoObjectId
+	createMongoObjectId,
+	removePrefixFromKeys
 } = require('../../../utils');
 const { BadRequestError } = require('../../../core/error.response');
-const {
-	grantAccess,
-	initAccessControl
-} = require('../../../middlewares/rbac.middleware');
-const {
-	getAllListRole,
-} = require('../../../repositories/role.repo');
-const { getRoleNameByUserId } = require('../../../repositories/user.repo');
-const userModel = require('../../../models/user.model');
+const { initAccessControl } = require('../../../middlewares/rbac.middleware');
+const { getAllListRole } = require('@repositories/role.repo');
+const { getRoleNameByUserId } = require('@repositories/user.repo');
 const { extendUser } = require('./role.service');
 
 // Create Resource
-async function createResource({ name, slug, description }) {
-	try {
-		const resource = await ResourceModel.create({
-			src_name: name,
-			src_slug: slug,
-			src_description: description
-		});
-
-		return renameObjectKey(
-			{
-				src_name: 'name',
-				src_slug: 'slug',
-				src_description: 'description',
-				_id: 'resourceId'
-			},
-			resource.toObject()
-		);
-	} catch (err) {
-		if (err.code === 11000) {
-			// Check for duplicate key error
-			throw new BadRequestError('Resource already exists');
-		} else {
-			throw err; // Rethrow other errors for potential handling
-		}
-	}
+async function createResource(payload) {
+	const data = addPrefixToKeys(payload, 'src_', ['_id']);
+	const result = await ResourceModel.create(data);
+	return removePrefixFromKeys(result.toObject(), 'src_');
 }
 
 // Get Resource List
-async function resourceList( { limit = 30, offset = 0, search = '' }) {
-
-
-	const resources = await ResourceModel.aggregate([
+async function resourceList({ limit = 30, offset = 0, search = '' }) {
+	const results = await ResourceModel.aggregate([
 		{
 			$project: {
 				name: '$src_name',
 				slug: '$src_slug',
 				description: '$src_description',
-				_id: 0,
-				resourceId: '$_id',
+				_id: 1,
 				isRoot: '$src_isRoot',
-				menu: '$src_menu',
-
+				icon: '$src_icon',
 				createdAt: 1
 			}
 		},
@@ -76,12 +45,26 @@ async function resourceList( { limit = 30, offset = 0, search = '' }) {
 				]
 			}
 		},
-		{ $sort: { createdAt: -1 } },
-		{ $skip: parseInt(offset) },
-		{ $limit: parseInt(limit) }
+		{
+			$facet: {
+				totalCount: [{ $count: 'count' }], // Tính tổng số lượng tài nguyên
+				paginatedResults: [
+					{ $sort: { createdAt: -1 } }, // Sắp xếp kết quả
+					{ $skip: parseInt(offset) }, // Bỏ qua số lượng theo offset
+					{ $limit: parseInt(limit) } // Giới hạn số lượng theo limit
+				]
+			}
+		}
 	]);
 
-	return resources;
+	// Xử lý kết quả
+	const totalCount = results[0].totalCount[0]?.count || 0;
+	const paginatedResults = results[0].paginatedResults;
+
+	return {
+		totalCount,
+		paginatedResults
+	};
 }
 
 // Create Role by admin
@@ -89,8 +72,7 @@ async function createRoleRoot(payload) {
 	const parentId = (await getRoleNameByUserId(userId)).usr_role._id;
 	const checkExist = await RoleModel.findOne({
 		rol_name: payload.name,
-		rol_parents: { $in: [{ _id: convertToObjectIdMongoose(parentId) }] },
-		rol_isRoot: true
+		rol_parents: { $in: [convertToObjectIdMongoose(parentId)] }
 	});
 	payload.userId = convertToObjectIdMongoose(userId);
 	payload.parents = { _id: convertToObjectIdMongoose(parentId) };
@@ -157,7 +139,6 @@ const delGrantstoRole = async (payload) => {
 
 	return rol;
 };
-
 
 // get all list role
 const getListAllRole = async () => {

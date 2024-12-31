@@ -3,6 +3,7 @@
 'use strict';
 
 const { model, Schema } = require('mongoose');
+const { type } = require('os');
 
 const DOCUMENT_NAME = 'Role';
 const COLLECTTION_NAME = 'Roles';
@@ -32,7 +33,10 @@ const roleSchema = new Schema(
 				isRoot: { type: Boolean, default: false }
 			}
 		],
-		rol_parents: [{ _id: { type: Schema.Types.ObjectId, ref: DOCUMENT_NAME } }],
+		rol_parents: {
+			type: Array,
+			default: [{type: Schema.Types.ObjectId, ref: 'Role'}]
+		},
 		rol_isRoot: { type: Boolean, default: false }
 	},
 	{

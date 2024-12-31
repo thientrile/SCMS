@@ -9,27 +9,27 @@ const COLLECTON_NAME = "Keys";
 // Declare the Schema of the Mongo model
 const KeyTokenSchema = new Schema(
   {
-    tk_userId: {
+    tkn_userId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "Users",
     },
-    tk_clientId: {
+    tkn_clientId: {
       type: Schema.Types.UUID,
       default: () => randomUUID(),
       unique: true,
       index: true,
     },
-    tk_publicKey: {
+    tkn_publicKey: {
       type: String,
       required: true,
     },
-    tk_privateKey: {
+    tkn_privateKey: {
       type: String,
       required: true,
     },
 
-    tk_refreshTokensUsed: {
+    tkn_refreshTokensUsed: {
       // nhung RT da duoc su dung
       type: Array,
       default: [],
